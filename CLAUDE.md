@@ -9,6 +9,11 @@ This project uses specialized iOS agents (`.claude/agents/`). Claude Code auto-d
 - **swift-testing-expert**: Swift Testing, fakes, parameterized and async tests
 - **ios-reviewer**: cross-cutting review after any change
 
+Project commands (`.claude/commands/`), run only when you type them:
+
+- **/ios-review [base]**: reviews the branch against `main` (or `base`) inside the `ios-reviewer` agent, on Opus
+- **/branch-report [base ref]**: builds an `ios-change-report` for the branch's latest work, on Sonnet (needs the maintainer-local skill)
+
 Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.claude/settings.json`). The orchestrator reads and explores once; specialists inherit that context and focus on their domain. Without the env var they start fresh and re-read files themselves.
 
 ### Project conventions for agents
