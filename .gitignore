@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Xcode per-user state
+xcuserdata/
+
+# Claude Code per-user settings
+.claude/settings.local.json
+
+# Maintainer-local skill: never commit a copy
+.claude/skills/ios-modularization/
