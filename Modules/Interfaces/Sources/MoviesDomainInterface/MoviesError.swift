@@ -4,6 +4,8 @@ public enum MoviesError: Error, Equatable, Sendable {
     case offline
     /// The API key is missing or was rejected.
     case unauthorized
+    /// The requested movie doesn't exist.
+    case notFound
     /// Anything else: server errors, unexpected responses.
     case unavailable
 }

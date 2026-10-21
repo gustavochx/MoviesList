@@ -1,0 +1,19 @@
+{
+  "id": 693134,
+  "title": "Dune: Part Two",
+  "tagline": "Long live the fighters.",
+  "overview": "Follow the mythic journey of Paul Atreides.",
+  "release_date": "2024-02-27",
+  "runtime": 167,
+  "genres": [{ "id": 878, "name": "Science Fiction" }, { "id": 12, "name": "Adventure" }],
+  "vote_average": 8.142,
+  "vote_count": 8782,
+  "poster_path": "/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
+  "backdrop_path": "/eZ239CUp1d6OryZEBPnO2n87gMG.jpg",
+  "credits": {
+    "cast": [
+      { "id": 1190668, "name": "Timothée Chalamet", "character": "Paul Atreides", "profile_path": "/dFxpwRpmzpVfP1zjluH68DeQhyj.jpg", "order": 0 },
+      { "id": 7, "name": "Unknown Extra", "character": null, "profile_path": null, "order": 1 }
+    ]
+  }
+}

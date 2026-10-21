@@ -45,6 +45,33 @@ struct MoviesIntegrationTests {
         #expect(try #require(client.requests.first).url?.path() == "/3/movie/popular")
     }
 
+    @Test func detailsAreMappedWithTheCastTrimmed() async throws {
+        let response: [String: Any] = [
+            "id": 438631,
+            "title": "Dune",
+            "runtime": 155,
+            "genres": [["id": 1, "name": "Drama"]],
+            "vote_average": 7.8,
+            "vote_count": 12000,
+            "credits": ["cast": (1...20).map { ["id": $0, "name": "Actor \($0)", "character": "Role"] }]
+        ]
+        client.responseToBeReturned = .success((try JSONSerialization.data(withJSONObject: response), 200))
+
+        let details = try await sut.details(id: 438631)
+
+        #expect(details.title == "Dune")
+        #expect(details.runtimeMinutes == 155)
+        #expect(details.genres == ["Drama"])
+        #expect(details.cast.count == LiveMoviesService.castLimit)
+        #expect(try #require(client.requests.first).url?.path() == "/3/movie/438631")
+    }
+
+    @Test func missingMovieSurfacesAsNotFound() async {
+        client.responseToBeReturned = .success((Data(), 404))
+
+        await #expect(throws: MoviesError.notFound) { try await sut.details(id: 1) }
+    }
+
     @Test func rejectedKeySurfacesAsUnauthorized() async {
         client.responseToBeReturned = .success((Data(), 401))
 

@@ -56,14 +56,9 @@ private struct MovieListContent: View {
             }
         case let .empty(.noResults(query)):
             ContentUnavailableView.search(text: query)
-        case let .failed(error):
-            ContentUnavailableView {
-                Label(error.title, systemImage: error.systemImage)
-            } description: {
-                Text(error.message)
-            } actions: {
-                Button("Try Again") { Task { await viewModel.retry() } }
-                    .buttonStyle(.borderedProminent)
+        case let .failed(failure):
+            LoadFailureView(failure: failure, genericTitle: "Couldn't load movies") {
+                Task { await viewModel.retry() }
             }
         }
     }
@@ -110,7 +105,7 @@ private struct MovieRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            PosterImage(url: row.posterURL)
+            RemoteImage(url: row.posterURL)
                 .frame(width: 60, height: 90)
                 .clipShape(.rect(cornerRadius: 6))
 
@@ -135,60 +130,6 @@ private struct MovieRow: View {
         .contentShape(.rect)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.accessibilityLabel)
-    }
-}
-
-private struct PosterImage: View {
-    let url: URL?
-
-    var body: some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case let .success(image):
-                image
-                    .resizable()
-                    .scaledToFill()
-            case .empty where url != nil:
-                placeholder { ProgressView() }
-            default:
-                placeholder {
-                    Image(systemName: "film")
-                        .foregroundStyle(.secondary)
-                }
-            }
-        }
-    }
-
-    private func placeholder(@ViewBuilder _ content: () -> some View) -> some View {
-        Rectangle()
-            .fill(.quaternary)
-            .overlay(content())
-    }
-}
-
-private extension MovieListViewModel.MovieListError {
-    var title: LocalizedStringKey {
-        switch self {
-        case .offline: "You're offline"
-        case .missingAPIKey: "TMDB API key missing"
-        case .generic: "Couldn't load movies"
-        }
-    }
-
-    var message: LocalizedStringKey {
-        switch self {
-        case .offline: "Check your connection and try again."
-        case .missingAPIKey: "Add your key to Config/Secrets.xcconfig and rebuild."
-        case .generic: "Something went wrong. Please try again."
-        }
-    }
-
-    var systemImage: String {
-        switch self {
-        case .offline: "wifi.slash"
-        case .missingAPIKey: "key"
-        case .generic: "exclamationmark.triangle"
-        }
     }
 }
 

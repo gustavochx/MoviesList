@@ -76,12 +76,33 @@ struct MovieListViewModelTests {
         let load = Task { await sut.load() }
         await interactor.waitUntilHeld()
 
-        await sut.search("")
+        let search = Task { await sut.search("") }
+        await Task.yield()
         interactor.release()
         await load.value
+        await search.value
 
         #expect(interactor.calls == [Call(query: "", page: 1)])
         #expect(sut.state == .loaded(rows([1])))
+    }
+
+    @Test func loadDuringACancelledLoadStillLoads() async {
+        interactor.respond(with: .success(page([1])))
+        interactor.hold(query: "")
+        let sut = MovieListViewModel(interactor: interactor)
+        let cancelled = Task { await sut.load() }
+        await interactor.waitUntilHeld()
+        cancelled.cancel()
+
+        let next = Task { await sut.load() }
+        await Task.yield()
+        interactor.hold(query: nil)
+        interactor.release()
+        await cancelled.value
+        await next.value
+
+        #expect(sut.state == .loaded(rows([1])))
+        #expect(interactor.calls.count == 2)
     }
 
     // MARK: - Search
@@ -141,6 +162,24 @@ struct MovieListViewModelTests {
         #expect(sut.state == .loaded(rows([9])))
     }
 
+    @Test func repeatingASearchWhileItsCancelledRequestIsInFlightLoadsIt() async {
+        interactor.respond(to: "dune", with: .success(page([9])))
+        interactor.hold(query: "dune")
+        let sut = MovieListViewModel(interactor: interactor)
+        let cancelled = Task { await sut.search("dune") }
+        await interactor.waitUntilHeld()
+        cancelled.cancel()
+
+        let repeated = Task { await sut.search("dune") }
+        await Task.yield()
+        interactor.hold(query: nil)
+        interactor.release()
+        await cancelled.value
+        await repeated.value
+
+        #expect(sut.state == .loaded(rows([9])))
+    }
+
     @Test func staleResponsesAreIgnored() async {
         interactor.respond(to: "slow", with: .success(page([1])))
         interactor.respond(to: "fast", with: .success(page([2])))
@@ -160,12 +199,12 @@ struct MovieListViewModelTests {
     // MARK: - Errors
 
     @Test(arguments: [
-        (MoviesError.offline as any Error, MovieListViewModel.MovieListError.offline),
+        (MoviesError.offline as any Error, LoadFailure.offline),
         (MoviesError.unauthorized, .missingAPIKey),
         (MoviesError.unavailable, .generic),
         (URLError(.badServerResponse), .generic)
     ])
-    func errorsAreMapped(error: any Error, expected: MovieListViewModel.MovieListError) async {
+    func errorsAreMapped(error: any Error, expected: LoadFailure) async {
         interactor.respond(with: .failure(error))
         let sut = MovieListViewModel(interactor: interactor)
 
