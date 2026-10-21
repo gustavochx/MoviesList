@@ -1,26 +1,32 @@
-import Foundation
 import MoviesDomainInterface
 import Testing
 @testable import MovieListFeature
 
 @Suite struct MovieListInteractorTests {
-    private struct FakeService: MoviesService {
-        var result: Result<[Movie], Error>
-        func all() async throws -> [Movie] { try result.get() }
+    private let service = MoviesServiceSpyingStub()
+
+    @Test func blankQueryIsLeftToTheDomain() async throws {
+        let sut = MovieListInteractor(service: service)
+
+        _ = try await sut.movies(matching: "", page: 2)
+
+        #expect(service.calls == [.search(query: "", page: 2)])
     }
 
-    private struct Failure: Error {}
+    @Test func queryRunsASearch() async throws {
+        service.searchResultToBeReturned = .success(.fixture(movies: [.fixture(id: 2)]))
+        let sut = MovieListInteractor(service: service)
 
-    @Test func returnsMoviesFromTheService() async throws {
-        let movie = Movie(createdAt: Date(timeIntervalSince1970: 100))
-        let sut = MovieListInteractor(service: FakeService(result: .success([movie])))
+        let page = try await sut.movies(matching: "dune", page: 1)
 
-        #expect(try await sut.loadMovies() == [movie])
+        #expect(page.movies.map(\.id) == [2])
+        #expect(service.calls == [.search(query: "dune", page: 1)])
     }
 
     @Test func rethrowsServiceErrors() async {
-        let sut = MovieListInteractor(service: FakeService(result: .failure(Failure())))
+        service.searchResultToBeReturned = .failure(MoviesError.offline)
+        let sut = MovieListInteractor(service: service)
 
-        await #expect(throws: Failure.self) { try await sut.loadMovies() }
+        await #expect(throws: MoviesError.offline) { try await sut.movies(matching: "dune", page: 1) }
     }
 }

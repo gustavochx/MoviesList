@@ -1,8 +1,5 @@
-import Foundation
-
-/// Where Movie values are stored. Implemented by a data module (e.g. MoviesData);
-/// until one exists, the app's composition root supplies an in-memory implementation.
+/// Where movies come from. Implemented by a data module (`MoviesData` for TMDB).
 public protocol MovieRepository: Sendable {
-    func all() async throws -> [Movie]
-    func save(_ item: Movie) async throws
+    func popular(page: Int) async throws -> MoviesPage
+    func search(_ query: String, page: Int) async throws -> MoviesPage
 }

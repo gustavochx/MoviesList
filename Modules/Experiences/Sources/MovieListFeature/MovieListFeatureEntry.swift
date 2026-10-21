@@ -36,7 +36,7 @@ public final class MovieListFeatureController {
 
     /// Reloads what MovieList shows.
     public func reload() async {
-        await coordinator?.viewModel.load()
+        await coordinator?.viewModel.retry()
     }
 }
 

@@ -1,18 +1,13 @@
 import Foundation
 import Testing
-@testable import MoviesDomainInterface
+import MoviesDomainInterface
 
 @Suite struct MovieTests {
     @Test func valuesWithTheSameFieldsAreEqual() {
-        let id = UUID()
-        let date = Date(timeIntervalSince1970: 100)
-
-        #expect(Movie(id: id, createdAt: date) == Movie(id: id, createdAt: date))
+        #expect(Movie.fixture() == Movie.fixture())
     }
 
     @Test func valuesWithDifferentIdsAreNotEqual() {
-        let date = Date(timeIntervalSince1970: 100)
-
-        #expect(Movie(createdAt: date) != Movie(createdAt: date))
+        #expect(Movie.fixture(id: 1) != Movie.fixture(id: 2))
     }
 }

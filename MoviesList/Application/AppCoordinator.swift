@@ -7,6 +7,7 @@ import MovieListFeature
 import Foundation
 import Observation
 import SwiftUI
+import MoviesData
 import MoviesDomain
 import MoviesDomainInterface
 
@@ -23,24 +24,19 @@ final class AppCoordinator {
         outputs: MovieListFeatureOutputs()
     )
 
-    init() {
-        movies = LiveMoviesService(repository: InMemoryMovieRepository())
+    init(bundle: Bundle = .main) {
+        let configuration = TMDBConfiguration(apiKey: Self.apiKey(in: bundle))
+        movies = LiveMoviesService(repository: TMDBMovieRepository(configuration: configuration))
     }
 
     func makeRootView() -> some View {
         movieListFeature.makeRootView()
     }
-}
 
-/// Keeps Movie values in memory until a data module exists.
-private actor InMemoryMovieRepository: MovieRepository {
-    private var items: [Movie] = []
-
-    func all() async throws -> [Movie] {
-        items
-    }
-
-    func save(_ item: Movie) async throws {
-        items.append(item)
+    /// The TMDB key injected at build time from Config/Secrets.xcconfig (gitignored) through Config/Info.plist.
+    /// Empty when the secrets file is missing; the feature then shows its "API key missing" state.
+    private static func apiKey(in bundle: Bundle) -> String {
+        let value = bundle.object(forInfoDictionaryKey: "TMDBAPIKey") as? String ?? ""
+        return value.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
