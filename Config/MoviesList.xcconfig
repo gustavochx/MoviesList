@@ -1,0 +1,4 @@
+// App target base configuration.
+// Secrets (TMDB_API_KEY) live in Secrets.xcconfig, which is gitignored; copy Secrets.example.xcconfig to create it.
+// Without it the app still builds and shows the "API key missing" state.
+#include? "Secrets.xcconfig"

@@ -10,6 +10,7 @@
 		8E0FF590D89D352818C04AE1 /* MoviesDomainInterface in Frameworks */ = {isa = PBXBuildFile; productRef = A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */; };
 		9635516894D72D332D29B304 /* MoviesDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 62E743F8D569B7082D18FB6A /* MoviesDomain */; };
 		C89CD0612DAFD0F307D5EA8C /* MovieListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 85B1FA2F543A670483DD4924 /* MovieListFeature */; };
+		B920CF0EA8E9B82833BF0AEC /* MoviesData in Frameworks */ = {isa = PBXBuildFile; productRef = C9B1940658A67336CAFA9649 /* MoviesData */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +29,9 @@
 		50044C96D1D0F5B3221357C9 /* Experiences */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experiences; sourceTree = "<group>"; };
 		BF6A702E24703B578A3A3F95 /* Interfaces */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Interfaces; sourceTree = "<group>"; };
 		D97D8632FE5D94D82B3EBCEB /* Cores */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Cores; sourceTree = "<group>"; };
+		C15B2D549FDD50B82949017B /* MoviesList.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MoviesList.xcconfig; sourceTree = "<group>"; };
+		4462791F4382CCE54192D425 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B7E7D0F9E60B8212C6B8B83E /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -51,6 +55,7 @@
 				C89CD0612DAFD0F307D5EA8C /* MovieListFeature in Frameworks */,
 				9635516894D72D332D29B304 /* MoviesDomain in Frameworks */,
 				8E0FF590D89D352818C04AE1 /* MoviesDomainInterface in Frameworks */,
+				B920CF0EA8E9B82833BF0AEC /* MoviesData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,6 +72,7 @@
 		156260B9308803DE00211622 = {
 			isa = PBXGroup;
 			children = (
+				F9CC34EB656D9CF1F01E41A9 /* Config */,
 				2EAEA41112E51CC7A8593B24 /* Modules */,
 				156260C4308803DE00211622 /* MoviesList */,
 				156260D2308803DF00211622 /* MoviesListTests */,
@@ -93,6 +99,16 @@
 			path = Modules;
 			sourceTree = "<group>";
 		};
+		F9CC34EB656D9CF1F01E41A9 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				C15B2D549FDD50B82949017B /* MoviesList.xcconfig */,
+				B7E7D0F9E60B8212C6B8B83E /* Secrets.example.xcconfig */,
+				4462791F4382CCE54192D425 /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -116,6 +132,7 @@
 				85B1FA2F543A670483DD4924 /* MovieListFeature */,
 				62E743F8D569B7082D18FB6A /* MoviesDomain */,
 				A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */,
+				C9B1940658A67336CAFA9649 /* MoviesData */,
 			);
 			productName = MoviesList;
 			productReference = 156260C2308803DE00211622 /* MoviesList.app */;
@@ -342,7 +359,9 @@
 		};
 		156260E4308803DF00211622 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C15B2D549FDD50B82949017B /* MoviesList.xcconfig */;
 			buildSettings = {
+				INFOPLIST_FILE = Config/Info.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -384,7 +403,9 @@
 		};
 		156260E5308803DF00211622 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C15B2D549FDD50B82949017B /* MoviesList.xcconfig */;
 			buildSettings = {
+				INFOPLIST_FILE = Config/Info.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -518,6 +539,10 @@
 		A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MoviesDomainInterface;
+		};
+		C9B1940658A67336CAFA9649 /* MoviesData */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MoviesData;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

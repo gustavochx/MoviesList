@@ -1,28 +1,44 @@
-import Foundation
 import Testing
 import MoviesDomainInterface
 @testable import MoviesDomain
 
 @Suite struct LiveMoviesServiceTests {
-    private struct FakeRepository: MovieRepository {
-        var items: [Movie]
-        func all() async throws -> [Movie] { items }
-        func save(_ item: Movie) async throws {}
+    private let repository = MovieRepositorySpyingStub()
+
+    @Test(arguments: ["", "   ", "\n"])
+    func blankQueryReturnsPopular(query: String) async throws {
+        let sut = LiveMoviesService(repository: repository)
+
+        _ = try await sut.search(query, page: 2)
+
+        #expect(repository.calls == [.popular(page: 2)])
     }
 
-    @Test func returnsItemsNewestFirst() async throws {
-        let old = Movie(createdAt: Date(timeIntervalSince1970: 100))
-        let new = Movie(createdAt: Date(timeIntervalSince1970: 200))
-        let sut = LiveMoviesService(repository: FakeRepository(items: [old, new]))
+    @Test func queryIsTrimmed() async throws {
+        let sut = LiveMoviesService(repository: repository)
 
-        let result = try await sut.all()
+        _ = try await sut.search("  dune ", page: 1)
 
-        #expect(result == [new, old])
+        #expect(repository.calls == [.search(query: "dune", page: 1)])
     }
 
-    @Test func returnsNothingWhenRepositoryIsEmpty() async throws {
-        let sut = LiveMoviesService(repository: FakeRepository(items: []))
+    @Test func untitledMoviesAreDropped() async throws {
+        repository.popularResultToBeReturned = .success(.fixture(
+            movies: [.fixture(id: 1), .fixture(id: 2, title: " ")],
+            totalPages: 5
+        ))
+        let sut = LiveMoviesService(repository: repository)
 
-        #expect(try await sut.all().isEmpty)
+        let page = try await sut.popular(page: 1)
+
+        #expect(page.movies.map(\.id) == [1])
+        #expect(page.totalPages == 5)
+    }
+
+    @Test func errorsPassThrough() async {
+        repository.popularResultToBeReturned = .failure(MoviesError.offline)
+        let sut = LiveMoviesService(repository: repository)
+
+        await #expect(throws: MoviesError.offline) { try await sut.popular(page: 1) }
     }
 }

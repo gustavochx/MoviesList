@@ -1,9 +1,10 @@
 import MoviesDomainInterface
 
-/// Scene logic for the movie list: what to load and how to shape it for this screen.
+/// Scene logic for the movie list: which movies to show for the current search text.
 /// The view model talks to this protocol; the interactor talks to the domain through its interface.
 protocol MovieListInteracting: Sendable {
-    func loadMovies() async throws -> [Movie]
+    /// Search results for `query`; the domain returns popular movies for a blank one.
+    func movies(matching query: String, page: Int) async throws -> MoviesPage
 }
 
 struct MovieListInteractor: MovieListInteracting {
@@ -13,7 +14,7 @@ struct MovieListInteractor: MovieListInteracting {
         self.service = service
     }
 
-    func loadMovies() async throws -> [Movie] {
-        try await service.all()
+    func movies(matching query: String, page: Int) async throws -> MoviesPage {
+        try await service.search(query, page: page)
     }
 }

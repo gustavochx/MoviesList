@@ -4,6 +4,9 @@
 # Xcode per-user state
 xcuserdata/
 
+# Local secrets (TMDB API key)
+Config/Secrets.xcconfig
+
 # Claude Code per-user settings
 .claude/settings.local.json
 

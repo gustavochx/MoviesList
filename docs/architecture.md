@@ -2,10 +2,22 @@
 
 The app is split into local Swift packages under `Modules/`. The app target is the composition root.
 
+## Setup
+
+Movies come from [TMDB](https://developer.themoviedb.org/docs/getting-started). The API key is never committed:
+
+```bash
+cp Config/Secrets.example.xcconfig Config/Secrets.xcconfig   # gitignored
+# then set TMDB_API_KEY in Config/Secrets.xcconfig
+```
+
+`Config/MoviesList.xcconfig` includes the secrets file, and `Config/Info.plist` exposes the value as `TMDBAPIKey`, which `AppCoordinator` reads. Without the file the app still builds and shows an "API key missing" state. A key shipped in an app binary can be extracted, so treat it as a public client key.
+
 | Package | Modules | Type | Who may import it |
 |---|---|---|---|
 | `Modules/Interfaces` | `MoviesDomainInterface` | interface (protocols + models) | everyone |
 | `Modules/Cores` | `MoviesDomain` | core · domain (concrete) | the app and tests only |
+| `Modules/Cores` | `MoviesData` | core · data source (TMDB `MovieRepository`) | the app and tests only |
 | `Modules/Experiences` | `MovieListFeature` | experience (a user flow) | the app only |
 
 Features depend on interfaces, never on concrete cores or on other features. `sh tools/architecture/check.sh` enforces the rules, classifying modules by their names and folders. It runs the validator of the maintainer-local ios-modularization skill (`~/.claude/skills`, not part of this repo) and is skipped when that skill isn't installed.
@@ -19,7 +31,7 @@ AppCoordinator (app)  ──builds──▶  <Feature>FeatureEntry(dependencies,
                                          │
                                   <Feature>Coordinator   in-feature navigation (Route, path)
                                          │ builds
-                     View ──▶ ViewModel ──▶ Interactor ──▶ <Domain>Service (interface)
+                     View ──▶ ViewModel ──▶ Interactor ──▶ <Domain>Service (interface) ──▶ Repository (interface) ◀── data module
 ```
 
 - **View** (SwiftUI): renders `ViewModel.state`, forwards user intents. No logic.
