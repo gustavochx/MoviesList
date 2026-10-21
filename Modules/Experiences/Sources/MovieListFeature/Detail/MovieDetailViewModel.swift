@@ -47,8 +47,11 @@ final class MovieDetailViewModel {
         state = .loading
         await fetch()
     }
+}
 
-    private func fetch() async {
+// MARK: Private helpers
+private extension MovieDetailViewModel {
+    func fetch() async {
         generation += 1
         let current = generation
         isLoading = true
@@ -69,7 +72,7 @@ final class MovieDetailViewModel {
         }
     }
 
-    private func resumeLoadWaiters() {
+    func resumeLoadWaiters() {
         let waiters = loadWaiters
         loadWaiters = []
         waiters.forEach { $0.resume() }
