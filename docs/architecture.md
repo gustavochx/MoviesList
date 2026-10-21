@@ -52,6 +52,7 @@ Sources/MovieListFeature/
   List/                         the list flow: view, view model, interactor, row model
     Components/                 the list's subviews, one per file
   Detail/                       the detail flow (kept free of List/ types, so it can become its own module)
+    Components/                 the detail's subviews, one per file
   Shared/                       views and helpers used by more than one flow
   TestDoubles/                  #if DEBUG SpyingStubs for the feature's internal protocols
 ```
