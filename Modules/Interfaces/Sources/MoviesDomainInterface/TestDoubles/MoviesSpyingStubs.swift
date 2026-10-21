@@ -5,6 +5,7 @@ import Foundation
 public enum MoviesCall: Equatable, Sendable {
     case popular(page: Int)
     case search(query: String, page: Int)
+    case details(id: Movie.ID)
 }
 
 /// SpyingStub for `MoviesService`: returns the configured results and records every call.
@@ -25,16 +26,25 @@ public final class MoviesServiceSpyingStub: MoviesService, @unchecked Sendable {
         set { lock.withLock { storage.searchResult = newValue } }
     }
 
+    public var detailsResultToBeReturned: Result<MovieDetails, any Error> {
+        get { lock.withLock { storage.detailsResult } }
+        set { lock.withLock { storage.detailsResult = newValue } }
+    }
+
     public var calls: [MoviesCall] {
         lock.withLock { storage.calls }
     }
 
     public func popular(page: Int) async throws -> MoviesPage {
-        try lock.withLock { try storage.record(.popular(page: page)) }
+        try lock.withLock { storage.calls.append(.popular(page: page)); return try storage.popularResult.get() }
     }
 
     public func search(_ query: String, page: Int) async throws -> MoviesPage {
-        try lock.withLock { try storage.record(.search(query: query, page: page)) }
+        try lock.withLock { storage.calls.append(.search(query: query, page: page)); return try storage.searchResult.get() }
+    }
+
+    public func details(id: Movie.ID) async throws -> MovieDetails {
+        try lock.withLock { storage.calls.append(.details(id: id)); return try storage.detailsResult.get() }
     }
 }
 
@@ -56,30 +66,32 @@ public final class MovieRepositorySpyingStub: MovieRepository, @unchecked Sendab
         set { lock.withLock { storage.searchResult = newValue } }
     }
 
+    public var detailsResultToBeReturned: Result<MovieDetails, any Error> {
+        get { lock.withLock { storage.detailsResult } }
+        set { lock.withLock { storage.detailsResult = newValue } }
+    }
+
     public var calls: [MoviesCall] {
         lock.withLock { storage.calls }
     }
 
     public func popular(page: Int) async throws -> MoviesPage {
-        try lock.withLock { try storage.record(.popular(page: page)) }
+        try lock.withLock { storage.calls.append(.popular(page: page)); return try storage.popularResult.get() }
     }
 
     public func search(_ query: String, page: Int) async throws -> MoviesPage {
-        try lock.withLock { try storage.record(.search(query: query, page: page)) }
+        try lock.withLock { storage.calls.append(.search(query: query, page: page)); return try storage.searchResult.get() }
+    }
+
+    public func details(id: Movie.ID) async throws -> MovieDetails {
+        try lock.withLock { storage.calls.append(.details(id: id)); return try storage.detailsResult.get() }
     }
 }
 
 private struct SpyingStubStorage {
     var popularResult: Result<MoviesPage, any Error> = .success(.fixture(movies: []))
     var searchResult: Result<MoviesPage, any Error> = .success(.fixture(movies: []))
+    var detailsResult: Result<MovieDetails, any Error> = .success(.fixture())
     var calls: [MoviesCall] = []
-
-    mutating func record(_ call: MoviesCall) throws -> MoviesPage {
-        calls.append(call)
-        switch call {
-        case .popular: return try popularResult.get()
-        case .search: return try searchResult.get()
-        }
-    }
 }
 #endif

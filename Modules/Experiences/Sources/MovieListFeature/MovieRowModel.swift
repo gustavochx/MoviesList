@@ -22,9 +22,7 @@ struct MovieRowModel: Identifiable, Equatable {
             ? movie.rating.formatted(.number.precision(.fractionLength(1)).locale(locale))
             : String(localized: "Not rated")
 
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "UTC")!
-        let releaseYear = movie.releaseDate.map { String(calendar.component(.year, from: $0)) }
+        let releaseYear = ReleaseYear.string(from: movie.releaseDate)
         year = releaseYear ?? "—"
 
         let yearPart = releaseYear ?? String(localized: "release year unknown")
