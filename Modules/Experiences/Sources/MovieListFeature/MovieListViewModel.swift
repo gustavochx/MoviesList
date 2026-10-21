@@ -42,22 +42,24 @@ final class MovieListViewModel {
     @ObservationIgnored private var page = 0
     /// Bumped on every new query so responses for an older one are dropped.
     @ObservationIgnored private var generation = 0
+    /// True while a first-page request is in flight; cleared when it ends, even by cancellation.
+    @ObservationIgnored private var isReloading = false
 
     init(interactor: MovieListInteracting) {
         self.interactor = interactor
     }
 
-    /// First load. Does nothing once results are on screen, so re-appearing doesn't refetch.
-    /// Still loads when a previous request was cancelled before anything was shown.
+    /// First load. Does nothing once results are on screen or a load is already in flight,
+    /// but still loads when a previous request was cancelled before anything was shown.
     func load() async {
-        guard page == 0 || state == .loading else { return }
+        guard page == 0 || state == .loading, !isReloading else { return }
         await reload(showingLoading: true)
     }
 
     func search(_ text: String) async {
         let text = text.trimmingCharacters(in: .whitespacesAndNewlines)
         // Same text: nothing to do, unless its request was cancelled and the spinner is still up.
-        guard text != query || state == .loading else { return }
+        guard text != query || (state == .loading && !isReloading) else { return }
         query = text
         await reload(showingLoading: true)
     }
@@ -79,7 +81,8 @@ final class MovieListViewModel {
     }
 
     func loadMore() async {
-        guard case let .loaded(rows) = state, canLoadMore, !isLoadingMore else { return }
+        // During a refresh the rows on screen are about to be replaced, so don't extend them.
+        guard case let .loaded(rows) = state, canLoadMore, !isLoadingMore, !isReloading else { return }
         let current = generation
         isLoadingMore = true
         loadMoreFailed = false
@@ -100,6 +103,8 @@ final class MovieListViewModel {
     private func reload(showingLoading: Bool) async {
         generation += 1
         let current = generation
+        isReloading = true
+        defer { if current == generation { isReloading = false } }
         if showingLoading { state = .loading }
         isLoadingMore = false
         loadMoreFailed = false

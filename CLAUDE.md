@@ -23,7 +23,8 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
 - Build and test (prefix with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` if `xcode-select` points at CommandLineTools):
   ```bash
   xcodebuild -project MoviesList.xcodeproj -scheme MoviesList -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
-  (cd Modules/Experiences && xcodebuild test -scheme Experiences -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # same for Interfaces, Cores
+  (cd Modules/Experiences && xcodebuild test -scheme Experiences -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # same for Interfaces
+  (cd Modules/Cores && xcodebuild test -scheme Cores-Package -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # packages with several products use <Package>-Package
   sh tools/architecture/check.sh
   ```
 - Done means: the app builds and its tests pass, every touched package's tests pass, and `check.sh` reports 0 errors.

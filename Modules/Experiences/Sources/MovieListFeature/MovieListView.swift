@@ -33,9 +33,9 @@ private struct MovieListContent: View {
     let viewModel: MovieListViewModel
     let onSelect: (Movie.ID) -> Void
 
+    // The first load comes from the parent's `.task(id: searchText)`, which runs on appear with an empty query.
     var body: some View {
         content
-            .task { await viewModel.load() }
     }
 
     @ViewBuilder

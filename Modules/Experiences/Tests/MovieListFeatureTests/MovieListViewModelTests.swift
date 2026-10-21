@@ -69,6 +69,21 @@ struct MovieListViewModelTests {
         #expect(sut.state == .loaded(rows([1])))
     }
 
+    @Test func loadAndAnInitialEmptySearchFetchOnce() async {
+        interactor.respond(with: .success(page([1])))
+        interactor.hold(query: "")
+        let sut = MovieListViewModel(interactor: interactor)
+        let load = Task { await sut.load() }
+        await interactor.waitUntilHeld()
+
+        await sut.search("")
+        interactor.release()
+        await load.value
+
+        #expect(interactor.calls == [Call(query: "", page: 1)])
+        #expect(sut.state == .loaded(rows([1])))
+    }
+
     // MARK: - Search
 
     @Test func searchShowsResults() async {
@@ -256,6 +271,24 @@ struct MovieListViewModelTests {
         await refresh.value
 
         #expect(sut.state == .loaded(rows([2])))
+    }
+
+    @Test func loadMoreDuringRefreshIsIgnored() async {
+        interactor.respond(with: .success(page([1], page: 1, of: 2)))
+        interactor.respond(page: 2, with: .success(page([2], page: 2, of: 2)))
+        let sut = MovieListViewModel(interactor: interactor)
+        await sut.load()
+        interactor.respond(with: .success(page([5], page: 1, of: 2)))
+        interactor.hold(query: "")
+        let refresh = Task { await sut.refresh() }
+        await interactor.waitUntilHeld()
+
+        await sut.loadMore()
+        interactor.release()
+        await refresh.value
+
+        #expect(interactor.calls == [Call(query: "", page: 1), Call(query: "", page: 1)])
+        #expect(sut.state == .loaded(rows([5])))
     }
 
     @Test func failedRefreshShowsTheError() async {
