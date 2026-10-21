@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8E0FF590D89D352818C04AE1 /* MoviesDomainInterface in Frameworks */ = {isa = PBXBuildFile; productRef = A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */; };
+		9635516894D72D332D29B304 /* MoviesDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 62E743F8D569B7082D18FB6A /* MoviesDomain */; };
+		C89CD0612DAFD0F307D5EA8C /* MovieListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 85B1FA2F543A670483DD4924 /* MovieListFeature */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		156260D0308803DF00211622 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -19,6 +25,9 @@
 /* Begin PBXFileReference section */
 		156260C2308803DE00211622 /* MoviesList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		156260CF308803DF00211622 /* MoviesListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MoviesListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		50044C96D1D0F5B3221357C9 /* Experiences */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Experiences; sourceTree = "<group>"; };
+		BF6A702E24703B578A3A3F95 /* Interfaces */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Interfaces; sourceTree = "<group>"; };
+		D97D8632FE5D94D82B3EBCEB /* Cores */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Cores; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -39,6 +48,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C89CD0612DAFD0F307D5EA8C /* MovieListFeature in Frameworks */,
+				9635516894D72D332D29B304 /* MoviesDomain in Frameworks */,
+				8E0FF590D89D352818C04AE1 /* MoviesDomainInterface in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +67,7 @@
 		156260B9308803DE00211622 = {
 			isa = PBXGroup;
 			children = (
+				2EAEA41112E51CC7A8593B24 /* Modules */,
 				156260C4308803DE00211622 /* MoviesList */,
 				156260D2308803DF00211622 /* MoviesListTests */,
 				156260C3308803DE00211622 /* Products */,
@@ -68,6 +81,16 @@
 				156260CF308803DF00211622 /* MoviesListTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2EAEA41112E51CC7A8593B24 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				50044C96D1D0F5B3221357C9 /* Experiences */,
+				D97D8632FE5D94D82B3EBCEB /* Cores */,
+				BF6A702E24703B578A3A3F95 /* Interfaces */,
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,6 +113,9 @@
 			);
 			name = MoviesList;
 			packageProductDependencies = (
+				85B1FA2F543A670483DD4924 /* MovieListFeature */,
+				62E743F8D569B7082D18FB6A /* MoviesDomain */,
+				A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */,
 			);
 			productName = MoviesList;
 			productReference = 156260C2308803DE00211622 /* MoviesList.app */;
@@ -350,7 +376,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
@@ -392,7 +418,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				XROS_DEPLOYMENT_TARGET = 26.5;
 			};
@@ -416,7 +442,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MoviesList.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MoviesList";
 				XROS_DEPLOYMENT_TARGET = 26.5;
@@ -441,7 +467,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MoviesList.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MoviesList";
 				XROS_DEPLOYMENT_TARGET = 26.5;
@@ -479,6 +505,21 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		62E743F8D569B7082D18FB6A /* MoviesDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MoviesDomain;
+		};
+		85B1FA2F543A670483DD4924 /* MovieListFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MovieListFeature;
+		};
+		A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MoviesDomainInterface;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 156260BA308803DE00211622 /* Project object */;
 }
