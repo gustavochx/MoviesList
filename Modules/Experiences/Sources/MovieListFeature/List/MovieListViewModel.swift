@@ -93,8 +93,11 @@ final class MovieListViewModel {
             loadMoreFailed = true
         }
     }
+}
 
-    private func reload(showingLoading: Bool) async {
+// MARK: Private helpers
+private extension MovieListViewModel {
+    func reload(showingLoading: Bool) async {
         generation += 1
         let current = generation
         isReloading = true
@@ -125,20 +128,20 @@ final class MovieListViewModel {
         }
     }
 
-    private func waitForReload() async {
+    func waitForReload() async {
         while isReloading {
             await withCheckedContinuation { reloadWaiters.append($0) }
         }
     }
 
-    private func resumeReloadWaiters() {
+    func resumeReloadWaiters() {
         let waiters = reloadWaiters
         reloadWaiters = []
         waiters.forEach { $0.resume() }
     }
 
     /// A cancelled task (the user typed again, or the screen went away) is not a failure to show.
-    private func isCancellation(_ error: Error) -> Bool {
+    func isCancellation(_ error: Error) -> Bool {
         error is CancellationError || Task.isCancelled
     }
 }

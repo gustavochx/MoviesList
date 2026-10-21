@@ -20,6 +20,7 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
 - Features import only `*Interface` modules, never other features or concrete cores. Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
 - Tests must use Swift Testing (`import Testing`), not XCTest.
 - Liquid Glass only when explicitly requested.
+- View files: `body` returns `content`, and the pieces live as computed properties in a `private extension <View>` under `// MARK: UI Building Blocks`. Anything that reads its own frequently changing state (e.g. a load-more footer) becomes its own `View` type instead, so SwiftUI re-evaluates only that piece. List subviews go in `List/Components/`, one type per file.
 - Build and test (prefix with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` if `xcode-select` points at CommandLineTools):
   ```bash
   xcodebuild -project MoviesList.xcodeproj -scheme MoviesList -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test

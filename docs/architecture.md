@@ -43,6 +43,21 @@ AppCoordinator (app)  ──builds──▶  <Feature>FeatureEntry(dependencies,
 
 Business rules shared by several features belong in the domain (`MoviesDomain`), not in an interactor.
 
+### Folder layout inside a feature
+
+```
+Sources/MovieListFeature/
+  MovieListFeatureEntry.swift   public API (Entry / Dependencies / Outputs)
+  MovieListCoordinator.swift    navigation across the feature's flows
+  List/                         the list flow: view, view model, interactor, row model
+    Components/                 the list's subviews, one per file
+  Detail/                       the detail flow (kept free of List/ types, so it can become its own module)
+  Shared/                       views and helpers used by more than one flow
+  TestDoubles/                  #if DEBUG SpyingStubs for the feature's internal protocols
+```
+
+Tests mirror it: `Tests/MovieListFeatureTests/List/`, `Detail/`, and feature-level tests (coordinator) at the root.
+
 ## Adding a feature
 
 With the maintainer-local ios-modularization skill installed:
