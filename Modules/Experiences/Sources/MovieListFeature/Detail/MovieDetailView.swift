@@ -10,9 +10,12 @@ struct MovieDetailView: View {
             .navigationBarTitleDisplayMode(.inline)
             .task { await viewModel.load() }
     }
+}
 
+// MARK: UI Building Blocks
+private extension MovieDetailView {
     @ViewBuilder
-    private var content: some View {
+    var content: some View {
         switch viewModel.state {
         case .loading:
             ProgressView()
