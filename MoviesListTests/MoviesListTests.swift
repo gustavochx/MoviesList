@@ -1,8 +1,8 @@
 import Foundation
-import Testing
 import MoviesData
 import MoviesDomain
 import MoviesDomainInterface
+import Testing
 
 /// Integration: the domain service on top of the real TMDB repository, with only the HTTP layer stubbed.
 @Suite(.tags(.integration))
@@ -18,7 +18,10 @@ struct MoviesIntegrationTests {
       "page": 1,
       "total_pages": 2,
       "results": [
-        { "id": 438631, "title": "Dune", "release_date": "2021-09-15", "vote_average": 7.8, "poster_path": "/d5NXSklXo0qyIYkgV94XAgMIckC.jpg" },
+        {
+          "id": 438631, "title": "Dune", "release_date": "2021-09-15", "vote_average": 7.8,
+          "poster_path": "/d5NXSklXo0qyIYkgV94XAgMIckC.jpg"
+        },
         { "id": 7, "title": "  ", "release_date": "", "vote_average": 0, "poster_path": null }
       ]
     }

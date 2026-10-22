@@ -3,13 +3,13 @@
 //  MoviesList
 //
 
-import MovieListFeature
 import Foundation
-import Observation
-import SwiftUI
+import MovieListFeature
 import MoviesData
 import MoviesDomain
 import MoviesDomainInterface
+import Observation
+import SwiftUI
 
 /// Composes the app from its features and owns every navigation that crosses a feature boundary.
 /// Each feature keeps its own internal flow in its own coordinator and leaves only through its outputs.

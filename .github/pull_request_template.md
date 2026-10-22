@@ -24,6 +24,7 @@
 - [ ] App builds and its tests pass (`xcodebuild … -scheme MoviesList test`)
 - [ ] Tests pass for every touched package (`Interfaces` / `Cores` / `Experiences`)
 - [ ] `sh tools/architecture/check.sh` reports 0 errors
+- [ ] `sh tools/lint.sh` reports 0 violations
 - [ ] No new warnings
 
 ## Notes for reviewers

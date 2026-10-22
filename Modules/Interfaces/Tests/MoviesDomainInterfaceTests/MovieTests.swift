@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 import MoviesDomainInterface
+import Testing
 
 @Suite struct MovieTests {
     @Test func valuesWithTheSameFieldsAreEqual() {

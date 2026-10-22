@@ -33,8 +33,9 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
   (cd Modules/Experiences && xcodebuild test -scheme Experiences -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # same for Interfaces
   (cd Modules/Cores && xcodebuild test -scheme Cores-Package -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # packages with several products use <Package>-Package
   sh tools/architecture/check.sh
+  sh tools/lint.sh   # SwiftLint, strict (brew install swiftlint)
   ```
-- Done means: the app builds and its tests pass, every touched package's tests pass, and `check.sh` reports 0 errors.
+- Done means: the app builds and its tests pass, every touched package's tests pass, `check.sh` reports 0 errors, and `tools/lint.sh` reports 0 violations.
 
 ### Skills
 

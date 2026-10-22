@@ -62,6 +62,10 @@ Business rules shared by several features belong in the domain (`MoviesDomain`),
 
 Components take plain values, never domain models; sizes specific to a screen (a poster's 60×90) are passed in by the feature. Views use tokens instead of literal spacings, radii, colors and fonts; component dimensions such as a poster's frame stay local. It imports only SwiftUI, so it never carries domain types or app-specific text: those stay in the feature (for example `LoadFailureView` maps `MoviesError` to texts and draws an `ErrorStateView`).
 
+### Linting
+
+SwiftLint (`brew install swiftlint`) checks style with the rules in `.swiftlint.yml`. Run `sh tools/lint.sh`: it is strict (any violation fails) and part of the definition of done; it fails with an install hint when SwiftLint is missing. The app target's "SwiftLint" build phase shows the same findings inline in Xcode: warning-severity violations (most rules, and lines over 140 characters) don't fail the build, while error-severity ones (e.g. lines over 200 characters) do. `.claude/` (vendored skills) is excluded. When a rule fights a deliberate project pattern, tune or disable it in `.swiftlint.yml` with a comment saying why, instead of inline `swiftlint:disable`.
+
 ### Folder layout inside a feature
 
 ```

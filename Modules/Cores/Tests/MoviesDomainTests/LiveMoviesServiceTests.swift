@@ -1,6 +1,6 @@
-import Testing
-import MoviesDomainInterface
 @testable import MoviesDomain
+import MoviesDomainInterface
+import Testing
 
 @Suite struct LiveMoviesServiceTests {
     private let repository = MovieRepositorySpyingStub()
