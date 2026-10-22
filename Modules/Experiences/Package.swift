@@ -8,12 +8,16 @@ let package = Package(
         .library(name: "MovieListFeature", targets: ["MovieListFeature"])
     ],
     dependencies: [
-        .package(path: "../Interfaces")
+        .package(path: "../Interfaces"),
+        .package(path: "../UI")
     ],
     targets: [
         .target(
             name: "MovieListFeature",
-            dependencies: [.product(name: "MoviesDomainInterface", package: "Interfaces")],
+            dependencies: [
+                .product(name: "MoviesDomainInterface", package: "Interfaces"),
+                .product(name: "DesignSystem", package: "UI")
+            ],
             swiftSettings: [.defaultIsolation(MainActor.self)]
         ),
         .testTarget(

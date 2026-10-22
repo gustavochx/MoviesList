@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -35,17 +36,16 @@ private extension MovieListContent {
     }
 
     var loading: some View {
-        ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        LoadingStateView()
     }
 
     var noPopularMovies: some View {
-        ContentUnavailableView {
-            Label("No movies right now", systemImage: "film")
-        } description: {
-            Text("Popular movies will show up here.")
-        } actions: {
-            Button("Try Again") { Task { await viewModel.retry() } }
+        EmptyStateView(
+            title: "No movies right now",
+            message: "Popular movies will show up here.",
+            systemImage: "film"
+        ) {
+            Task { await viewModel.retry() }
         }
     }
 }

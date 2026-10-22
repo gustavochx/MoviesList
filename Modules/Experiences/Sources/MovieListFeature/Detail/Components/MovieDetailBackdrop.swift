@@ -1,3 +1,4 @@
+import DesignSystem
 import SwiftUI
 
 /// The wide backdrop image at the top of the detail screen. Decorative, so hidden from VoiceOver.
@@ -12,11 +13,7 @@ struct MovieDetailBackdrop: View {
 // MARK: UI Building Blocks
 private extension MovieDetailBackdrop {
     var content: some View {
-        // A fixed-height clear frame keeps the filled image from widening the layout.
-        Color.clear
-            .frame(height: 220)
-            .overlay { RemoteImage(url: url, fallbackSymbol: "photo") }
-            .clipped()
+        BannerImage(url: url, height: 220)
             .accessibilityHidden(true)
     }
 }

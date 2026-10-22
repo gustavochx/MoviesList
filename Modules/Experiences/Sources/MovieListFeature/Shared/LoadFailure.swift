@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -23,14 +24,7 @@ struct LoadFailureView: View {
     let retry: () -> Void
 
     var body: some View {
-        ContentUnavailableView {
-            Label(title, systemImage: systemImage)
-        } description: {
-            Text(message)
-        } actions: {
-            Button("Try Again", action: retry)
-                .buttonStyle(.borderedProminent)
-        }
+        ErrorStateView(title: title, message: message, systemImage: systemImage, retry: retry)
     }
 
     private var title: LocalizedStringKey {

@@ -1,3 +1,4 @@
+import DesignSystem
 import SwiftUI
 
 /// Load-more progress or retry, plus the TMDB attribution. Its own view so load-more state changes
@@ -6,18 +7,18 @@ struct MovieListFooter: View {
     let viewModel: MovieListViewModel
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: DSSpacing.m) {
             if viewModel.isLoadingMore {
                 ProgressView()
             } else if viewModel.loadMoreFailed {
                 Button("Couldn't load more movies. Try again") { Task { await viewModel.loadMore() } }
             }
             Text("This product uses the TMDB API but is not endorsed or certified by TMDB.")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
+                .font(DSFont.footnote)
+                .foregroundStyle(DSColor.secondaryText)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
+        .padding(.vertical, DSSpacing.s)
     }
 }

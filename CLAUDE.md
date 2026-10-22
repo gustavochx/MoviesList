@@ -22,9 +22,10 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
 - Swift 6 language mode with complete data-race checking. Default isolation: the app and `Experiences` are `MainActor`; `Interfaces` and `Cores` are nonisolated.
 - Use `@Observable` (not `ObservableObject`) for new code. `@unchecked Sendable`, `nonisolated(unsafe)` and `@preconcurrency` need a comment stating the safety invariant.
 - MVVM + Coordinators + Interactors (see `docs/architecture.md`): View renders state; ViewModel (`@Observable`, `@MainActor`) talks only to an interactor protocol; Interactor (internal, `Sendable`) calls domain interfaces; Coordinator owns navigation inside the feature; `<Feature>Entry` / `Dependencies` / `Outputs` is the feature's only public API; `AppCoordinator` is the composition root.
-- Features import only `*Interface` modules, never other features or concrete cores. Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
+- Features import only `*Interface` modules and the `DesignSystem` UI module, never other features or concrete cores. Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
 - Tests must use Swift Testing (`import Testing`), not XCTest.
 - Liquid Glass only when explicitly requested.
+- Styling goes through `DesignSystem` (`Modules/UI`): use its tokens (`DSSpacing`, `DSRadius`, `DSColor`, `DSFont`) and components instead of literals. Keep domain types and app-specific texts out of it; it imports only SwiftUI.
 - View files: `body` returns `content`, and the pieces live as computed properties in a `private extension <View>` under `// MARK: UI Building Blocks`. Anything that reads its own frequently changing state (e.g. a load-more footer) becomes its own `View` type instead, so SwiftUI re-evaluates only that piece. Each flow's subviews go in `<Flow>/Components/` (`List/Components/`, `Detail/Components/`), one type per file. A view model keeps its private helpers in a `private extension` under `// MARK: Private helpers`.
 - Build and test (prefix with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` if `xcode-select` points at CommandLineTools):
   ```bash

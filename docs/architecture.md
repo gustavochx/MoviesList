@@ -19,8 +19,9 @@ cp Config/Secrets.example.xcconfig Config/Secrets.xcconfig   # gitignored
 | `Modules/Cores` | `MoviesDomain` | core · domain (concrete) | the app and tests only |
 | `Modules/Cores` | `MoviesData` | core · data source (TMDB `MovieRepository`) | the app and tests only |
 | `Modules/Experiences` | `MovieListFeature` | experience (a user flow) | the app only |
+| `Modules/UI` | `DesignSystem` | ui · general (design tokens + generic components, SwiftUI only) | experiences and the app |
 
-Features depend on interfaces, never on concrete cores or on other features. `sh tools/architecture/check.sh` enforces the rules, classifying modules by their names and folders. It runs the validator of the maintainer-local ios-modularization skill (`~/.claude/skills`, not part of this repo) and is skipped when that skill isn't installed.
+Features depend on interfaces and on the `DesignSystem` UI module, never on concrete cores or on other features. `sh tools/architecture/check.sh` enforces the rules, classifying modules by their names and folders. It runs the validator of the maintainer-local ios-modularization skill (`~/.claude/skills`, not part of this repo) and is skipped when that skill isn't installed.
 
 There is no `modules.json` catalog or CODEOWNERS yet: with one app and one owner, naming conventions carry all the information. Add a catalog (the ios-modularization skill's `catalog.py init`) when a second app needs scopes, a rule exception has to be recorded, a module's name can't reveal its category, or several teams own modules (then generate CODEOWNERS from it).
 
@@ -43,6 +44,24 @@ AppCoordinator (app)  ──builds──▶  <Feature>FeatureEntry(dependencies,
 
 Business rules shared by several features belong in the domain (`MoviesDomain`), not in an interactor.
 
+### Design system
+
+`DesignSystem` (`Modules/UI`) holds the app's design tokens (`DSSpacing`, `DSRadius`, `DSColor`, `DSFont`) and generic components:
+
+| Component | Use it for |
+|---|---|
+| `LoadingStateView` | a full-screen spinner while a screen's first load runs |
+| `EmptyStateView` | nothing to show (no results, not found), with an optional plain action |
+| `ErrorStateView` | a failure, with a prominent retry button |
+| `RatingView` | a star rating: value plus optional detail (e.g. a vote count); the caller sets the font and accessibility label |
+| `RemoteImage` | any remote image that fills its frame, with spinner and fallback symbol |
+| `ArtworkImage` | a remote image at a fixed size with rounded corners (posters, thumbnails) |
+| `AvatarImage` | a circular remote image (people) |
+| `BannerImage` | a full-width, fixed-height remote image (backdrops) |
+| `TitledSection` | a header-trait title above any content |
+
+Components take plain values, never domain models; sizes specific to a screen (a poster's 60×90) are passed in by the feature. Views use tokens instead of literal spacings, radii, colors and fonts; component dimensions such as a poster's frame stay local. It imports only SwiftUI, so it never carries domain types or app-specific text: those stay in the feature (for example `LoadFailureView` maps `MoviesError` to texts and draws an `ErrorStateView`).
+
 ### Folder layout inside a feature
 
 ```
@@ -53,7 +72,7 @@ Sources/MovieListFeature/
     Components/                 the list's subviews, one per file
   Detail/                       the detail flow (kept free of List/ types, so it can become its own module)
     Components/                 the detail's subviews, one per file
-  Shared/                       views and helpers used by more than one flow
+  Shared/                       views and helpers used by more than one flow of this feature (app-specific texts, domain mapping)
   TestDoubles/                  #if DEBUG SpyingStubs for the feature's internal protocols
 ```
 

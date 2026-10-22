@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -13,17 +14,15 @@ struct CastCard: View {
 // MARK: UI Building Blocks
 private extension CastCard {
     var content: some View {
-        VStack(spacing: 6) {
-            RemoteImage(url: member.profileURL, fallbackSymbol: "person.fill")
-                .frame(width: 72, height: 72)
-                .clipShape(.circle)
+        VStack(spacing: DSSpacing.xs) {
+            AvatarImage(url: member.profileURL, diameter: 72)
             Text(member.name)
-                .font(.caption.bold())
+                .font(DSFont.captionStrong)
                 .lineLimit(2)
             if !member.character.isEmpty {
                 Text(member.character)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .font(DSFont.caption2)
+                    .foregroundStyle(DSColor.secondaryText)
                     .lineLimit(2)
             }
         }
