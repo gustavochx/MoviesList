@@ -8,6 +8,11 @@ struct DSColorAndFontTests {
         #expect(DSColor.rating == Color.yellow)
     }
 
+    @Test func primaryTextIsTheHierarchicalStyleNotAColor() {
+        // HierarchicalShapeStyle isn't Equatable; the type is what keeps it following the surrounding foreground style.
+        #expect(type(of: DSColor.primaryText) == HierarchicalShapeStyle.self)
+    }
+
     @Test func secondaryTextIsTheHierarchicalStyleNotAColor() {
         // HierarchicalShapeStyle isn't Equatable; the type is what keeps it following the surrounding foreground style.
         #expect(type(of: DSColor.secondaryText) == HierarchicalShapeStyle.self)

@@ -20,7 +20,7 @@ private extension CastRail {
                     CastCard(member: member)
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, DSSpacing.l)
         }
         .scrollIndicators(.hidden)
     }

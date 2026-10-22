@@ -1,0 +1,16 @@
+#!/bin/sh
+# Blocks commits whose staged changes contain TMDB credentials.
+# Enable once per clone: git config core.hooksPath tools/git-hooks
+ROOT=$(git rev-parse --show-toplevel) || exit 1
+
+if ! sh "$ROOT/tools/secrets/scan.sh" --staged; then
+  cat >&2 <<'EOF'
+
+pre-commit: commit blocked, the staged changes contain a TMDB credential (see above).
+Fix: remove the value from the file (keep it only in the gitignored Config/Secrets.xcconfig),
+or `git restore --staged <file>` if the secrets file itself was staged, then commit again.
+Using --no-verify is not the answer: the same scan runs in pre-push and in CI.
+EOF
+  exit 1
+fi
+exit 0

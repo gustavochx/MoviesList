@@ -13,6 +13,7 @@ Project rules:
 - Load data with `.task {}`, not `Task {}` inside `onAppear`.
 - Navigation inside a feature belongs to its coordinator (`Route`, `path`); leaving the feature goes through `<Feature>FeatureOutputs`.
 - Previews use fakes for the interactor, never live services. Liquid Glass only when the user asks for it.
+- Follow `.claude/rules/design-system.md`; run its self-check grep before reporting.
 
 Before reporting, build the app and run the `Experiences` package tests (commands in CLAUDE.md).
 

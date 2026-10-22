@@ -22,7 +22,7 @@ private extension MovieDetailHeader {
                 rating
             }
         }
-        .padding(.horizontal)
+        .padding(.horizontal, DSSpacing.l)
     }
 
     var poster: some View {
