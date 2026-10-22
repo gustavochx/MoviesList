@@ -1,5 +1,5 @@
-import Testing
 import MoviesDomainInterface
+import Testing
 
 @Suite struct MovieDetailsTests {
     @Test func valuesWithTheSameFieldsAreEqual() {

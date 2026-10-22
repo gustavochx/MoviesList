@@ -1,6 +1,6 @@
+@testable import MovieListFeature
 import MoviesDomainInterface
 import Testing
-@testable import MovieListFeature
 
 @Suite struct MovieDetailInteractorTests {
     private let service = MoviesServiceSpyingStub()

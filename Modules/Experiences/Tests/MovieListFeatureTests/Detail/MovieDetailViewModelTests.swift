@@ -1,7 +1,7 @@
 import Foundation
+@testable import MovieListFeature
 import MoviesDomainInterface
 import Testing
-@testable import MovieListFeature
 
 @MainActor
 @Suite(.timeLimit(.minutes(1)))

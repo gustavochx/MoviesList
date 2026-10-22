@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 @testable import MoviesData
+import Testing
 
 /// Shared plumbing for the TMDB repository suites: JSON fixtures from this target's bundle
 /// and a repository wired to an `HTTPClientSpyingStub`.

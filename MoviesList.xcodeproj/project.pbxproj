@@ -120,6 +120,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 156260E3308803DF00211622 /* Build configuration list for PBXNativeTarget "MoviesList" */;
 			buildPhases = (
+				7AF6A2E40DF0BD9FB0C75490 /* SwiftLint */,
 				156260BE308803DE00211622 /* Sources */,
 				156260BF308803DE00211622 /* Frameworks */,
 				156260C0308803DE00211622 /* Resources */,
@@ -221,6 +222,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7AF6A2E40DF0BD9FB0C75490 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Inline SwiftLint findings in Xcode. Not strict: warnings never fail the build, error-severity violations do; tools/lint.sh is the gate.\nexport PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\"\nif command -v swiftlint >/dev/null 2>&1; then\n  cd \"$SRCROOT\" && swiftlint lint --quiet\nelse\n  echo \"warning: SwiftLint is not installed. Install it with: brew install swiftlint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		156260BE308803DE00211622 /* Sources */ = {
@@ -366,6 +389,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C15B2D549FDD50B82949017B /* MoviesList.xcconfig */;
 			buildSettings = {
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Config/Info.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -410,6 +434,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C15B2D549FDD50B82949017B /* MoviesList.xcconfig */;
 			buildSettings = {
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = Config/Info.plist;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -1,5 +1,5 @@
-import Testing
 import MoviesDomainInterface
+import Testing
 
 @Suite struct MoviesPageTests {
     @Test(arguments: [(1, 3, true), (3, 3, false), (1, 1, false), (1, 0, false)])

@@ -1,5 +1,5 @@
-import MoviesDomainInterface
 import Foundation
+import MoviesDomainInterface
 import Observation
 
 @MainActor
@@ -16,7 +16,6 @@ final class MovieListViewModel {
         case noPopularMovies
         case noResults(query: String)
     }
-
 
     private(set) var state: State = .loading
     /// The search text the current results belong to; empty means popular movies.

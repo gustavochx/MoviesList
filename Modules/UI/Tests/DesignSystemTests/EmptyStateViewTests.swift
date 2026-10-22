@@ -1,5 +1,5 @@
-import Testing
 @testable import DesignSystem
+import Testing
 
 @Suite("EmptyStateView")
 struct EmptyStateViewTests {

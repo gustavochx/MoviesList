@@ -1,7 +1,7 @@
 import Foundation
-import Testing
-import MoviesDomainInterface
 @testable import MoviesData
+import MoviesDomainInterface
+import Testing
 
 @Suite struct TMDBMovieRepositoryTests {
     // MARK: - Mapping

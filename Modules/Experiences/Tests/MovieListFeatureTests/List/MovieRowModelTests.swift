@@ -1,7 +1,7 @@
 import Foundation
+@testable import MovieListFeature
 import MoviesDomainInterface
 import Testing
-@testable import MovieListFeature
 
 @Suite struct MovieRowModelTests {
     private let enUS = Locale(identifier: "en_US")

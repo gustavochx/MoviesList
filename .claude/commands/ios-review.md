@@ -17,6 +17,7 @@ Base branch: if an argument was given (`$ARGUMENTS`), use it; otherwise use `mai
    - app tests (`-scheme MoviesList test`)
    - tests of every touched package (`Interfaces`, `Cores-Package`, `Experiences`)
    - `sh tools/architecture/check.sh`
+   - `sh tools/lint.sh` (SwiftLint, strict)
 3. Review against CLAUDE.md and the preloaded skills:
    - SwiftUI Correctness Checklist
    - concurrency: isolation per module, Sendable boundaries, invariant comments on escape hatches
@@ -25,4 +26,4 @@ Base branch: if an argument was given (`$ARGUMENTS`), use it; otherwise use `mai
    - the Verification section of `.github/pull_request_template.md`
 4. Report, under 500 words:
    - findings most severe first, each with file:line, the rule it breaks, a concrete failure scenario and the smallest fix; say plainly when there are none
-   - what you ran and the results (test counts, check.sh summary)
+   - what you ran and the results (test counts, check.sh summary, lint result)

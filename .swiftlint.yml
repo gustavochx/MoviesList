@@ -1,0 +1,54 @@
+# SwiftLint configuration for MoviesList. Run `sh tools/lint.sh` (strict: any violation fails).
+# Tune or disable a rule here, with a comment saying why, instead of inline `swiftlint:disable`.
+
+included:
+  - MoviesList
+  - MoviesListTests
+  - Modules
+
+excluded:
+  - Modules/*/.build
+  - Modules/*/.swiftpm
+  - .claude   # vendored upstream skills
+  - Config
+
+opt_in_rules:
+  - private_swiftui_state
+  - sorted_imports
+  - modifier_order
+  - empty_count
+  - first_where
+  - contains_over_first_not_nil
+  - closure_spacing
+  - vertical_whitespace_closing_braces
+  - unneeded_parentheses_in_closure_argument
+  - explicit_init
+  - redundant_type_annotation
+
+line_length:
+  warning: 140
+  error: 200
+  ignores_urls: true
+
+identifier_name:
+  excluded:
+    - id
+    # DesignSystem spacing tokens (DSSpacing.s, .m, .l, ...)
+    - s
+    - m
+    - l
+    - xs
+    - xl
+    - xxs
+    - xxl
+
+# force_unwrapping stays off: URL(string: "https://...")! constants in TMDBConfiguration are intentional.
+
+# Parameterized Swift Testing arguments are (name, token, expected) tuples, as the swift-testing standard suggests.
+large_tuple:
+  warning: 3
+  error: 4
+
+# Decodable DTOs mirror TMDB's JSON, e.g. TMDBMovieDetailsDTO.Credits.Cast.
+nesting:
+  type_level: 2
