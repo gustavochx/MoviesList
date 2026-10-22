@@ -45,7 +45,7 @@ private extension MovieDetailView {
                 if !model.overview.isEmpty {
                     TitledSection("Overview") {
                         Text(model.overview)
-                            .padding(.horizontal)
+                            .padding(.horizontal, DSSpacing.l)
                     }
                 }
                 if !model.cast.isEmpty {

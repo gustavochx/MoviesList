@@ -1,4 +1,6 @@
-# MoviesList
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository: MoviesList, a SwiftUI app that lists, searches and details TMDB movies.
 
 This project uses specialized iOS agents (`.claude/agents/`). Claude Code auto-delegates to the right one based on the task:
 
@@ -16,6 +18,17 @@ Project commands (`.claude/commands/`), run only when you type them:
 
 Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.claude/settings.json`). The orchestrator reads and explores once; specialists inherit that context and focus on their domain. Without the env var they start fresh and re-read files themselves.
 
+### Packages
+
+Local Swift packages under `Modules/`, linked into the app as folder references:
+
+- `Interfaces` → `MoviesDomainInterface`: models, the `MoviesService` and `MovieRepository` protocols, and `#if DEBUG` fixtures and SpyingStubs next to them.
+- `Cores` → `MoviesDomain` (`LiveMoviesService`), `MoviesData` (TMDB repository, `HTTPClient`, DTOs and mappers) and `FoundationExtensions` (foundational Foundation extensions).
+- `Experiences` → `MovieListFeature`, with `List/` and `Detail/` flows plus `Shared/` helpers.
+- `UI` → `DesignSystem`.
+
+`AppCoordinator` (app target) reads `TMDBAPIKey` from Info.plist and wires `LiveMoviesService(repository: TMDBMovieRepository(...))` into `MovieListFeatureEntry`.
+
 ### Project conventions for agents
 
 - SwiftUI app. App target iOS 26.5; local packages under `Modules/` keep an iOS 17 floor.
@@ -25,13 +38,16 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
 - Features import only `*Interface` modules and the `DesignSystem` UI module, never other features or concrete cores (foundational cores such as `FoundationExtensions` are the exception). Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
 - Tests must use Swift Testing (`import Testing`), not XCTest.
 - Liquid Glass only when explicitly requested.
-- Styling goes through `DesignSystem` (`Modules/UI`): use its tokens (`DSSpacing`, `DSRadius`, `DSColor`, `DSFont`) and components instead of literals. Keep domain types and app-specific texts out of it; it imports only SwiftUI.
+- Styling goes through `DesignSystem` (`Modules/UI`); the token and component rules and their self-check are in `.claude/rules/design-system.md`. Keep domain types and app-specific texts out of it; it imports only SwiftUI.
 - View files: `body` returns `content`, and the pieces live as computed properties in a `private extension <View>` under `// MARK: UI Building Blocks`. Anything that reads its own frequently changing state (e.g. a load-more footer) becomes its own `View` type instead, so SwiftUI re-evaluates only that piece. Each flow's subviews go in `<Flow>/Components/` (`List/Components/`, `Detail/Components/`), one type per file. A view model keeps its private helpers in a `private extension` under `// MARK: Private helpers`.
+- Setup: copy `Config/Secrets.example.xcconfig` to `Config/Secrets.xcconfig` (gitignored) and set `TMDB_API_KEY`. Without it the app builds but shows "TMDB API key missing". Never open or print `Config/Secrets.xcconfig`. Once per clone, run `git config core.hooksPath tools/git-hooks`: the git hooks (and the Claude hooks in `.claude/hooks`) block commits and pushes that contain the TMDB key or the secrets file, and Claude's reads of the secrets file, `--no-verify`, and `gh pr create` without a filled `--body-file` PR template.
 - Build and test (prefix with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer` if `xcode-select` points at CommandLineTools):
   ```bash
-  xcodebuild -project MoviesList.xcodeproj -scheme MoviesList -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
-  (cd Modules/Experiences && xcodebuild test -scheme Experiences -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # same for Interfaces
-  (cd Modules/Cores && xcodebuild test -scheme Cores-Package -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # packages with several products use <Package>-Package
+  xcodebuild -project MoviesList.xcodeproj -scheme MoviesList -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test  # app + MoviesListTests (.integration)
+  (cd Modules/Experiences && xcodebuild test -scheme Experiences -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # scheme = package name; same for Interfaces
+  (cd Modules/UI && xcodebuild test -scheme UI -destination 'platform=iOS Simulator,name=iPhone 17 Pro')
+  (cd Modules/Cores && xcodebuild test -scheme Cores-Package -destination 'platform=iOS Simulator,name=iPhone 17 Pro')  # several products: <Package>-Package runs them all
+  # one suite: add -only-testing:<TestTarget>/<Suite>, e.g. -only-testing:MovieListFeatureTests/LoadFailureTests
   sh tools/architecture/check.sh
   sh tools/lint.sh   # SwiftLint, strict (brew install swiftlint)
   ```

@@ -1,0 +1,29 @@
+#!/bin/sh
+# Blocks pushes whose new commits contain TMDB credentials.
+# stdin: "<local ref> <local sha> <remote ref> <remote sha>" per ref being pushed.
+ROOT=$(git rev-parse --show-toplevel) || exit 1
+
+is_zero() { ! printf '%s' "$1" | grep -q '[^0]'; }
+
+failed=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  is_zero "$local_sha" && continue   # branch deletion
+  if is_zero "$remote_sha" || ! git cat-file -e "${remote_sha}^{commit}" 2>/dev/null; then
+    # New remote ref (or a remote sha we don't have): scan what no remote has yet.
+    sh "$ROOT/tools/secrets/scan.sh" --range "$local_sha" --not --remotes || failed=1
+  else
+    sh "$ROOT/tools/secrets/scan.sh" --range "$remote_sha..$local_sha" || failed=1
+  fi
+done
+
+if [ "$failed" -ne 0 ]; then
+  cat >&2 <<'EOF'
+
+pre-push: push blocked, the commits being pushed contain a TMDB credential (see above).
+Fix: rewrite the offending commits so the value is gone (for example `git commit --amend`,
+or an interactive rebase for older commits), then push again. If the key was ever pushed
+anywhere, rotate it in TMDB. Using --no-verify is not the answer: CI runs the same scan.
+EOF
+  exit 1
+fi
+exit 0

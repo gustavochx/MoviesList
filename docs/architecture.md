@@ -9,9 +9,19 @@ Movies come from [TMDB](https://developer.themoviedb.org/docs/getting-started). 
 ```bash
 cp Config/Secrets.example.xcconfig Config/Secrets.xcconfig   # gitignored
 # then set TMDB_API_KEY in Config/Secrets.xcconfig
+git config core.hooksPath tools/git-hooks                    # once per clone: enables the secret-scan git hooks
 ```
 
 `Config/MoviesList.xcconfig` includes the secrets file, and `Config/Info.plist` exposes the value as `TMDBAPIKey`, which `AppCoordinator` reads. Without the file the app still builds and shows an "API key missing" state. A key shipped in an app binary can be extracted, so treat it as a public client key.
+
+### Hooks
+
+Four layers keep the TMDB key out of git and keep PRs on the template. All share `tools/secrets/scan.sh` and `tools/pr/check-body.sh`.
+
+1. **Git hooks** (`tools/git-hooks`, enabled by the `core.hooksPath` command above): `pre-commit` scans staged changes and `pre-push` scans the commits being pushed. They block the real key, 32-hex and v4-token patterns, and the secrets file itself.
+2. **Claude hooks** (`.claude/hooks`, registered in `.claude/settings.json`) plus `permissions.deny`: block Claude from reading, editing or mentioning the secrets file, writing the key, using `--no-verify`, and running `gh pr create` without a `--body-file` that passes the template check.
+3. **CI** (`.github/workflows/pr-checks.yml`): the `template` job checks the PR body and the `secrets` job scans the PR's commits.
+4. **Branch protection on `main`** must require the `template` and `secrets` checks. This is a manual GitHub setting (Settings, Branches), not something the repo can enforce itself.
 
 | Package | Modules | Type | Who may import it |
 |---|---|---|---|

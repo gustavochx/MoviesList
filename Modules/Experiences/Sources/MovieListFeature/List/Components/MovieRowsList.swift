@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -30,7 +31,7 @@ private extension MovieRowsList {
             Button { onSelect(row.id) } label: {
                 MovieRow(row: row)
             }
-            .foregroundStyle(.primary)
+            .foregroundStyle(DSColor.primaryText)
             .task { await viewModel.loadMoreIfNeeded(after: row) }
         }
     }

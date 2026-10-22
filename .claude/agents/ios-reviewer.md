@@ -11,6 +11,7 @@ Check:
 - SwiftUI: the swiftui-expert-skill Correctness Checklist.
 - Concurrency: isolation per module, Sendable boundaries, unsafe escape hatches have invariant comments.
 - Architecture: View → ViewModel → Interactor → domain interface; no business rules in views or view models; features import only `*Interface` modules.
+- Design system: `.claude/rules/design-system.md`; run its self-check grep and report each hit in changed feature/app files with the token or component to use.
 - Tests: new behavior covered with Swift Testing, through fakes.
 - The Standards and Verification sections of `.github/pull_request_template.md`.
 
