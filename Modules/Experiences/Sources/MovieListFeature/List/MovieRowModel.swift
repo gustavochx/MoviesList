@@ -1,4 +1,5 @@
 import Foundation
+import FoundationExtensions
 import MoviesDomainInterface
 
 /// What one row of the list displays. Formatting lives here so views stay dumb and it can be tested.
@@ -22,7 +23,7 @@ struct MovieRowModel: Identifiable, Equatable {
             ? movie.rating.formatted(.number.precision(.fractionLength(1)).locale(locale))
             : String(localized: "Not rated")
 
-        let releaseYear = ReleaseYear.string(from: movie.releaseDate)
+        let releaseYear = movie.releaseDate?.utcYear
         year = releaseYear ?? "—"
 
         let yearPart = releaseYear ?? String(localized: "release year unknown")

@@ -27,7 +27,7 @@ private extension MovieDetailView {
         case .notFound:
             notFound
         case let .failed(failure):
-            LoadFailureView(failure: failure, genericTitle: "Couldn't load this movie") {
+            LoadFailureView(reason: failure.reason(genericTitle: "Couldn't load this movie")) {
                 Task { await viewModel.retry() }
             }
         }

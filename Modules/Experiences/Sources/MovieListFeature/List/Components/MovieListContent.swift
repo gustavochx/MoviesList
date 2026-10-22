@@ -29,7 +29,7 @@ private extension MovieListContent {
             ContentUnavailableView
                 .search(text: query)
         case let .failed(failure):
-            LoadFailureView(failure: failure, genericTitle: "Couldn't load movies") {
+            LoadFailureView(reason: failure.reason(genericTitle: "Couldn't load movies")) {
                 Task { await viewModel.retry() }
             }
         }

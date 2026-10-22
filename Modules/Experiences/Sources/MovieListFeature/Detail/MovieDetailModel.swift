@@ -1,4 +1,5 @@
 import Foundation
+import FoundationExtensions
 import MoviesDomainInterface
 
 /// What the detail screen displays. Formatting lives here so views stay dumb and it can be tested.
@@ -29,7 +30,7 @@ struct MovieDetailModel: Equatable {
             Duration.seconds(minutes * 60).formatted(.units(allowed: [.hours, .minutes], width: .narrow).locale(locale))
         }
         let genres = details.genres.isEmpty ? nil : details.genres.formatted(.list(type: .and, width: .narrow).locale(locale))
-        factsLine = [ReleaseYear.string(from: details.releaseDate), runtime, genres]
+        factsLine = [details.releaseDate?.utcYear, runtime, genres]
             .compactMap { $0 }
             .joined(separator: " · ")
 
