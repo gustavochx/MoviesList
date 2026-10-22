@@ -22,7 +22,7 @@ Subagents run with context forking enabled (`CLAUDE_CODE_FORK_SUBAGENT=1` in `.c
 - Swift 6 language mode with complete data-race checking. Default isolation: the app and `Experiences` are `MainActor`; `Interfaces` and `Cores` are nonisolated.
 - Use `@Observable` (not `ObservableObject`) for new code. `@unchecked Sendable`, `nonisolated(unsafe)` and `@preconcurrency` need a comment stating the safety invariant.
 - MVVM + Coordinators + Interactors (see `docs/architecture.md`): View renders state; ViewModel (`@Observable`, `@MainActor`) talks only to an interactor protocol; Interactor (internal, `Sendable`) calls domain interfaces; Coordinator owns navigation inside the feature; `<Feature>Entry` / `Dependencies` / `Outputs` is the feature's only public API; `AppCoordinator` is the composition root.
-- Features import only `*Interface` modules and the `DesignSystem` UI module, never other features or concrete cores. Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
+- Features import only `*Interface` modules and the `DesignSystem` UI module, never other features or concrete cores (foundational cores such as `FoundationExtensions` are the exception). Name modules by convention (`<Name>Interface`, `<Name>Feature`, `<Name>Domain`).
 - Tests must use Swift Testing (`import Testing`), not XCTest.
 - Liquid Glass only when explicitly requested.
 - Styling goes through `DesignSystem` (`Modules/UI`): use its tokens (`DSSpacing`, `DSRadius`, `DSColor`, `DSFont`) and components instead of literals. Keep domain types and app-specific texts out of it; it imports only SwiftUI.

@@ -17,37 +17,17 @@ enum LoadFailure: Equatable {
     }
 }
 
-/// Full-screen error with a retry button. `genericTitle` names what failed to load.
-struct LoadFailureView: View {
-    let failure: LoadFailure
-    let genericTitle: LocalizedStringKey
-    let retry: () -> Void
-
-    var body: some View {
-        ErrorStateView(title: title, message: message, systemImage: systemImage, retry: retry)
-    }
-
-    private var title: LocalizedStringKey {
-        switch failure {
-        case .offline: "You're offline"
-        case .missingAPIKey: "TMDB API key missing"
-        case .generic: genericTitle
-        }
-    }
-
-    private var message: LocalizedStringKey {
-        switch failure {
-        case .offline: "Check your connection and try again."
-        case .missingAPIKey: "Add your key to Config/Secrets.xcconfig and rebuild."
-        case .generic: "Something went wrong. Please try again."
-        }
-    }
-
-    private var systemImage: String {
-        switch failure {
-        case .offline: "wifi.slash"
-        case .missingAPIKey: "key"
-        case .generic: "exclamationmark.triangle"
+extension LoadFailure {
+    /// The design-system reason to show. `genericTitle` names what failed to load; the TMDB key copy lives here, not in `DesignSystem`.
+    func reason(genericTitle: LocalizedStringKey) -> LoadFailureView.Reason {
+        switch self {
+        case .offline: .offline
+        case .generic: .generic(title: genericTitle)
+        case .missingAPIKey: .custom(
+            title: "TMDB API key missing",
+            message: "Add your key to Config/Secrets.xcconfig and rebuild.",
+            systemImage: "key"
+        )
         }
     }
 }

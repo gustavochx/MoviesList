@@ -9,6 +9,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../Interfaces"),
+        .package(path: "../Cores"),
         .package(path: "../UI")
     ],
     targets: [
@@ -16,7 +17,8 @@ let package = Package(
             name: "MovieListFeature",
             dependencies: [
                 .product(name: "MoviesDomainInterface", package: "Interfaces"),
-                .product(name: "DesignSystem", package: "UI")
+                .product(name: "DesignSystem", package: "UI"),
+                .product(name: "FoundationExtensions", package: "Cores")
             ],
             swiftSettings: [.defaultIsolation(MainActor.self)]
         ),

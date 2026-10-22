@@ -5,6 +5,7 @@ let package = Package(
     name: "Cores",
     platforms: [.iOS(.v17)],
     products: [
+        .library(name: "FoundationExtensions", targets: ["FoundationExtensions"]),
         .library(name: "MoviesDomain", targets: ["MoviesDomain"]),
         .library(name: "MoviesData", targets: ["MoviesData"])
     ],
@@ -12,6 +13,8 @@ let package = Package(
         .package(path: "../Interfaces")
     ],
     targets: [
+        .target(name: "FoundationExtensions"),
+        .testTarget(name: "FoundationExtensionsTests", dependencies: ["FoundationExtensions"]),
         .target(
             name: "MoviesDomain",
             dependencies: [.product(name: "MoviesDomainInterface", package: "Interfaces")]
