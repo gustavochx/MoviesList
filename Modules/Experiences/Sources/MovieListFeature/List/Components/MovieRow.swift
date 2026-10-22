@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -12,29 +13,27 @@ struct MovieRow: View {
 // MARK: UI Building Blocks
 private extension MovieRow {
     var content: some View {
-        HStack(spacing: 12) {
-            RemoteImage(url: row.posterURL)
-                .frame(width: 60, height: 90)
-                .clipShape(.rect(cornerRadius: 6))
+        HStack(spacing: DSSpacing.m) {
+            ArtworkImage(
+                url: row.posterURL,
+                size: CGSize(width: 60, height: 90),
+                cornerRadius: DSRadius.small,
+                fallbackSymbol: "film"
+            )
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: DSSpacing.xxs) {
                 Text(row.title)
-                    .font(.headline)
+                    .font(DSFont.sectionTitle)
                     .lineLimit(2)
                 Text(row.year)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                Label {
-                    Text(row.ratingText)
-                } icon: {
-                    Image(systemName: "star.fill")
-                        .foregroundStyle(.yellow)
-                }
-                .font(.subheadline)
+                    .font(DSFont.meta)
+                    .foregroundStyle(DSColor.secondaryText)
+                RatingView(value: row.ratingText)
+                    .font(DSFont.meta)
             }
             Spacer(minLength: 0)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, DSSpacing.xxs)
         .contentShape(.rect)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(row.accessibilityLabel)

@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -33,36 +34,35 @@ private extension MovieDetailView {
     }
 
     var loading: some View {
-        ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        LoadingStateView()
     }
 
     func loaded(_ model: MovieDetailModel) -> some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: DSSpacing.xl) {
                 MovieDetailBackdrop(url: model.backdropURL)
                 MovieDetailHeader(model: model)
                 if !model.overview.isEmpty {
-                    MovieDetailSection("Overview") {
+                    TitledSection("Overview") {
                         Text(model.overview)
                             .padding(.horizontal)
                     }
                 }
                 if !model.cast.isEmpty {
-                    MovieDetailSection("Top Cast") {
+                    TitledSection("Top Cast") {
                         CastRail(cast: model.cast)
                     }
                 }
             }
-            .padding(.bottom, 24)
+            .padding(.bottom, DSSpacing.xxl)
         }
     }
 
     var notFound: some View {
-        ContentUnavailableView(
-            "Movie not found",
-            systemImage: "film",
-            description: Text("It may have been removed from TMDB.")
+        EmptyStateView(
+            title: "Movie not found",
+            message: "It may have been removed from TMDB.",
+            systemImage: "film"
         )
     }
 }

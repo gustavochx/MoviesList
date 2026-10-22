@@ -11,6 +11,7 @@
 		9635516894D72D332D29B304 /* MoviesDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 62E743F8D569B7082D18FB6A /* MoviesDomain */; };
 		C89CD0612DAFD0F307D5EA8C /* MovieListFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 85B1FA2F543A670483DD4924 /* MovieListFeature */; };
 		B920CF0EA8E9B82833BF0AEC /* MoviesData in Frameworks */ = {isa = PBXBuildFile; productRef = C9B1940658A67336CAFA9649 /* MoviesData */; };
+		1C0A34CAD78EECDC35577CD4 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = F7EEA6DED1841ED03887DEA6 /* DesignSystem */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		C15B2D549FDD50B82949017B /* MoviesList.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = MoviesList.xcconfig; sourceTree = "<group>"; };
 		4462791F4382CCE54192D425 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7E7D0F9E60B8212C6B8B83E /* Secrets.example.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.example.xcconfig; sourceTree = "<group>"; };
+		B13266D91138E3AB2E24EC96 /* UI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = UI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -56,6 +58,7 @@
 				9635516894D72D332D29B304 /* MoviesDomain in Frameworks */,
 				8E0FF590D89D352818C04AE1 /* MoviesDomainInterface in Frameworks */,
 				B920CF0EA8E9B82833BF0AEC /* MoviesData in Frameworks */,
+				1C0A34CAD78EECDC35577CD4 /* DesignSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +98,7 @@
 				50044C96D1D0F5B3221357C9 /* Experiences */,
 				D97D8632FE5D94D82B3EBCEB /* Cores */,
 				BF6A702E24703B578A3A3F95 /* Interfaces */,
+				B13266D91138E3AB2E24EC96 /* UI */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -133,6 +137,7 @@
 				62E743F8D569B7082D18FB6A /* MoviesDomain */,
 				A2C6D87468546AD91C9581D6 /* MoviesDomainInterface */,
 				C9B1940658A67336CAFA9649 /* MoviesData */,
+				F7EEA6DED1841ED03887DEA6 /* DesignSystem */,
 			);
 			productName = MoviesList;
 			productReference = 156260C2308803DE00211622 /* MoviesList.app */;
@@ -543,6 +548,10 @@
 		C9B1940658A67336CAFA9649 /* MoviesData */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MoviesData;
+		};
+		F7EEA6DED1841ED03887DEA6 /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

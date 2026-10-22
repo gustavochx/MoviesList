@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -13,10 +14,10 @@ struct MovieDetailHeader: View {
 // MARK: UI Building Blocks
 private extension MovieDetailHeader {
     var content: some View {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: DSSpacing.l) {
             poster
 
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: DSSpacing.xs) {
                 titleAndFacts
                 rating
             }
@@ -25,49 +26,44 @@ private extension MovieDetailHeader {
     }
 
     var poster: some View {
-        RemoteImage(url: model.posterURL)
-            .frame(width: 100, height: 150)
-            .clipShape(.rect(cornerRadius: 8))
-            .accessibilityHidden(true)
+        ArtworkImage(
+            url: model.posterURL,
+            size: CGSize(width: 100, height: 150),
+            cornerRadius: DSRadius.medium,
+            fallbackSymbol: "film"
+        )
+        .accessibilityHidden(true)
     }
 
     @ViewBuilder
     var titleAndFacts: some View {
         Text(model.title)
-            .font(.title2.bold())
+            .font(DSFont.screenTitle)
             .accessibilityAddTraits(.isHeader)
         if let tagline = model.tagline {
             Text(tagline)
-                .font(.subheadline)
+                .font(DSFont.meta)
                 .italic()
-                .foregroundStyle(.secondary)
+                .foregroundStyle(DSColor.secondaryText)
         }
         if !model.factsLine.isEmpty {
             Text(model.factsLine)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(DSFont.meta)
+                .foregroundStyle(DSColor.secondaryText)
         }
     }
 
     var rating: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "star.fill")
-                .foregroundStyle(.yellow)
-            Text(model.ratingText)
-            if let votes = model.voteCountText {
-                Text("· \(votes)")
-                    .foregroundStyle(.secondary)
-            }
-        }
-        .font(.subheadline)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(model.ratingAccessibilityLabel)
+        RatingView(value: model.ratingText, detail: model.voteCountText)
+            .font(DSFont.meta)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(model.ratingAccessibilityLabel)
     }
 }
 
 #if DEBUG
 #Preview {
-    VStack(alignment: .leading, spacing: 24) {
+    VStack(alignment: .leading, spacing: DSSpacing.xxl) {
         MovieDetailHeader(model: MovieDetailModel(details: .fixture()))
         MovieDetailHeader(model: MovieDetailModel(details: .fixture(
             title: "Untitled Project", tagline: nil, releaseDate: nil, runtimeMinutes: nil, genres: [], rating: 0, voteCount: 0

@@ -1,3 +1,4 @@
+import DesignSystem
 import MoviesDomainInterface
 import SwiftUI
 
@@ -14,7 +15,7 @@ struct CastRail: View {
 private extension CastRail {
     var content: some View {
         ScrollView(.horizontal) {
-            LazyHStack(alignment: .top, spacing: 12) {
+            LazyHStack(alignment: .top, spacing: DSSpacing.m) {
                 ForEach(cast) { member in
                     CastCard(member: member)
                 }
